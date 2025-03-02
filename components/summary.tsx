@@ -68,42 +68,54 @@ Please provide a structured and detailed analysis along with practical recommend
 `
 
   const fetchSummary = async () => {
-    setLoading(true)
-    const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization:
-            "Bearer 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",
-          // "HTTP-Referer": "<YOUR_SITE_URL>", // Optional. Site URL for rankings on openrouter.ai.
-          // "X-Title": "<YOUR_SITE_NAME>", // Optional. Site title for rankings on openrouter.ai.
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "cognitivecomputations/dolphin3.0-r1-mistral-24b:free",
-          messages: [
-            {
-              role: "system",
-              content: systemPrompt,
-            },
-            {
-              role: "user",
-              content: [
-                {
-                  type: "text",
-                  text: userPrompt + "\n" + dataPrompt,
-                },
-              ],
-            },
-          ],
-        }),
+    try {
+      setLoading(true)
+      const response = await fetch(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer <YOUR_OPENROUTER_KEY>",
+            // "HTTP-Referer": "<YOUR_SITE_URL>", // Optional. Site URL for rankings on openrouter.ai.
+            // "X-Title": "<YOUR_SITE_NAME>", // Optional. Site title for rankings on openrouter.ai.
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "nousresearch/deephermes-3-llama-3-8b-preview:free",
+            messages: [
+              {
+                role: "system",
+                content: systemPrompt,
+              },
+              {
+                role: "user",
+                content: [
+                  {
+                    type: "text",
+                    text: userPrompt + "\n" + dataPrompt,
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      )
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error)
       }
-    )
-    const data = await response.json()
-    console.log("summary", data.choices[0].message.content)
-    setSummary(data.choices[0].message.content)
-    setLoading(false)
+      console.log("summaryData", data)
+      // console.log("summary", data.choices[0].message.content)
+      if (data) setSummary(data.choices[0].message.content)
+    } catch (error) {
+      setSummary(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong while fetching data from AI"
+      )
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
