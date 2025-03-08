@@ -7,3 +7,5 @@ Additionally, Momentum integrates AI support to provide:
 - Usage summaries
 - Personalized recommendations
 - Actionable insights to help you optimize your screen time.
+
+<img src=".github/Screenshot.png"  alt="momentum">
