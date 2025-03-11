@@ -1,5 +1,6 @@
 {
-  "name": "mochi",
+  "name": "momentum",
+  "description": "A pipe for Screenpipe that tracks your app usage and screen time on a daily basis. It presents this data through beautiful graphs for easy visualization and summary using AI.",
   "version": "0.0.1",
   "private": false,
   "scripts": {
